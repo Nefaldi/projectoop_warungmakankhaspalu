@@ -1,0 +1,231 @@
+/* ============================================================
+   WARUNG PALU — main.css
+   Global variables, resets, and shared components
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+/* ---- CSS Variables ---- */
+:root {
+  --clr-primary:    #C8402A;   /* merah tanah */
+  --clr-primary-dk: #9E2F1E;
+  --clr-primary-lt: #F5DDD9;
+  --clr-accent:     #E8973A;   /* kuning kunyit */
+  --clr-accent-lt:  #FDF3E3;
+  --clr-dark:       #1A1208;
+  --clr-mid:        #4A3728;
+  --clr-text:       #3A2A1C;
+  --clr-muted:      #8A7060;
+  --clr-border:     #E8DDD5;
+  --clr-bg:         #FBF7F3;
+  --clr-white:      #FFFFFF;
+  --clr-success:    #2E7D50;
+  --clr-warning:    #C07A00;
+  --clr-info:       #1A6EA0;
+
+  --ff-display: 'Playfair Display', Georgia, serif;
+  --ff-body:    'DM Sans', sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+
+  --shadow-sm:  0 2px 8px rgba(26,18,8,.08);
+  --shadow-md:  0 6px 24px rgba(26,18,8,.12);
+  --shadow-lg:  0 16px 48px rgba(26,18,8,.18);
+  --shadow-xl:  0 24px 80px rgba(26,18,8,.24);
+
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --sidebar-w: 260px;
+  --navbar-h:  70px;
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-body);
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; background: none; font-family: var(--ff-body); }
+input, select, textarea {
+  font-family: var(--ff-body);
+  font-size: 0.95rem;
+  outline: none;
+}
+img { display: block; max-width: 100%; }
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--clr-bg); }
+::-webkit-scrollbar-thumb { background: var(--clr-border); border-radius: 99px; }
+
+/* ---- Toast ---- */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(120px);
+  background: var(--clr-dark);
+  color: #fff;
+  padding: 0.8rem 1.6rem;
+  border-radius: var(--radius-xl);
+  font-size: 0.9rem;
+  font-weight: 500;
+  z-index: 9999;
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.35s;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: var(--shadow-lg);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.toast.success { background: var(--clr-success); }
+.toast.error   { background: var(--clr-primary); }
+
+/* ---- Modal Overlay ---- */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(26,18,8,.55);
+  backdrop-filter: blur(4px);
+  z-index: 800;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ---- Empty State ---- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  color: var(--clr-muted);
+  gap: 0.75rem;
+  width: 100%;
+}
+.empty-state span { font-size: 3rem; }
+.empty-state p { font-size: 0.95rem; }
+
+/* ---- Utility ---- */
+.full-width { grid-column: 1 / -1; }
+
+/* ---- Status Badges ---- */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-xl);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.status-badge.menunggu  { background: #FFF3CD; color: #7A5A00; }
+.status-badge.diproses  { background: #FFE4CC; color: #8A3A00; }
+.status-badge.selesai   { background: #D4EDDA; color: #155724; }
+
+/* ---- Form Shared ---- */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+.input-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--clr-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.input-group input,
+.input-group select,
+.input-group textarea {
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-white);
+  color: var(--clr-text);
+  font-size: 0.95rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+  border-color: var(--clr-primary);
+  box-shadow: 0 0 0 3px var(--clr-primary-lt);
+}
+
+/* ---- Buttons ---- */
+.btn-primary {
+  width: 100%;
+  padding: 0.9rem;
+  background: var(--clr-primary);
+  color: #fff;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 16px rgba(200,64,42,.35);
+}
+.btn-primary:hover {
+  background: var(--clr-primary-dk);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(200,64,42,.4);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-secondary {
+  width: 100%;
+  padding: 0.9rem;
+  background: var(--clr-dark);
+  color: #fff;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background var(--transition), transform var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-secondary:hover {
+  background: var(--clr-mid);
+  transform: translateY(-2px);
+}
+
+/* ---- Animations ---- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.05); }
+}

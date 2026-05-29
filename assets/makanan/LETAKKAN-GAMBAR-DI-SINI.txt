@@ -1,0 +1,12 @@
+Folder ini digunakan untuk menyimpan gambar makanan.
+
+Nama file yang diperlukan:
+- kaledo.jpg
+- sayur-kelor.jpg
+- nasi-jagung.jpg
+- duo-goreng.jpg
+- palumara.jpg
+- uta-dada.jpg
+
+Format yang disarankan: JPG, PNG, atau WebP
+Ukuran disarankan: 600x400 piksel (rasio 3:2)

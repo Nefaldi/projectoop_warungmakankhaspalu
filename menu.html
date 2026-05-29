@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu — Warung Palu</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/menu.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body class="menu-page">
+
+  <!-- Header / Navbar -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <div class="nav-brand">
+        <img src="assets/icons/logo.png" alt="Warung Palu" class="nav-logo-img"
+             onerror="this.outerHTML='&lt;div class=&quot;nav-logo-mark&quot;&gt;WP&lt;/div&gt;'" />
+        <div>
+          <span class="nav-title">Warung Palu</span>
+          <span class="nav-meja" id="navMeja">Meja #–</span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#" class="nav-link active" onclick="showSection('menu')">Menu</a>
+        <a href="#" class="nav-link" onclick="showSection('status')">Status Pesanan</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="btn-cart" onclick="toggleCart()">
+          Keranjang
+          <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+        <button class="btn-logout" onclick="logout()">Keluar</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- === SECTION: MENU === -->
+  <section class="section-menu active" id="sectionMenu">
+
+    <!-- Hero Banner -->
+    <div class="menu-hero">
+      <div class="hero-content">
+        <p class="hero-sub">Selamat Datang di</p>
+        <h1 class="hero-title">Warung Palu</h1>
+        <p class="hero-desc">Nikmati kelezatan masakan khas Kota Palu yang otentik dan menggugah selera</p>
+      </div>
+      <div class="hero-image">
+        <img src="assets/makanan/hero.jpg" alt="Hero" onerror="this.style.display='none'" />
+      </div>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="category-bar">
+      <button class="cat-btn active" onclick="filterCategory('semua')">Semua</button>
+      <button class="cat-btn" onclick="filterCategory('makanan')">Makanan</button>
+      <button class="cat-btn" onclick="filterCategory('minuman')">Minuman</button>
+      <button class="cat-btn" onclick="filterCategory('pencuci-mulut')">Pencuci Mulut</button>
+    </div>
+
+    <!-- Menu Grid -->
+    <div class="menu-container">
+
+      <div class="menu-section" data-category="makanan">
+        <h2 class="section-title">Makanan Utama</h2>
+        <div class="menu-grid" id="gridMakanan"></div>
+      </div>
+
+      <div class="menu-section" data-category="minuman">
+        <h2 class="section-title">Minuman</h2>
+        <div class="menu-grid" id="gridMinuman"></div>
+      </div>
+
+      <div class="menu-section" data-category="pencuci-mulut">
+        <h2 class="section-title">Pencuci Mulut</h2>
+        <div class="menu-grid" id="gridPencuciMulut"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- === SECTION: STATUS PESANAN === -->
+  <section class="section-status" id="sectionStatus">
+    <div class="status-container">
+      <h2 class="section-heading">Status Pesanan Anda</h2>
+      <p class="status-meja">Meja <span id="statusMejaNum">–</span></p>
+      <div id="orderStatusList" class="order-status-list">
+        <div class="empty-state">
+          <p>Belum ada pesanan</p>
+        </div>
+      </div>
+      <button class="btn-back-menu" onclick="showSection('menu')">
+        ← Kembali ke Menu
+      </button>
+    </div>
+  </section>
+
+  <!-- === CART SIDEBAR === -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>Keranjang Pesanan</h3>
+      <button class="btn-close-cart" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-meja">
+      <span>Meja</span>
+      <strong id="cartMejaNum">–</strong>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="empty-state">
+        <p>Keranjang masih kosong</p>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+      <div class="cart-total">
+        <span>Total</span>
+        <strong id="cartTotal">Rp 0</strong>
+      </div>
+      <div class="cart-note">
+        <label>Catatan (opsional)</label>
+        <textarea id="orderNote" placeholder="Contoh: Tidak pakai pedas..."></textarea>
+      </div>
+      <button class="btn-checkout" onclick="checkout()">Pesan Sekarang</button>
+    </div>
+  </aside>
+
+  <!-- Modal Item Detail -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+  <div class="item-modal" id="itemModal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-image">
+      <img id="modalImg" src="" alt="" />
+      <div id="modalImgPlaceholder" class="modal-img-placeholder"></div>
+    </div>
+    <div class="modal-body">
+      <h3 id="modalName"></h3>
+      <p id="modalDesc"></p>
+      <p class="modal-price" id="modalPrice"></p>
+      <div class="modal-qty">
+        <button onclick="changeModalQty(-1)">−</button>
+        <span id="modalQty">1</span>
+        <button onclick="changeModalQty(1)">+</button>
+      </div>
+      <button class="btn-add-modal" onclick="addFromModal()">Tambah ke Keranjang</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/app.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+</html>

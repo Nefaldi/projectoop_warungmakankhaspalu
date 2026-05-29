@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Kasir — Warung Palu</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body class="dashboard-page">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <img src="assets/icons/logo.png" alt="Warung Palu" class="sidebar-logo-img"
+           onerror="this.outerHTML='&lt;div class=&quot;sidebar-logo-mark&quot;&gt;WP&lt;/div&gt;'" />
+      <div>
+        <span class="sidebar-title">Warung Palu</span>
+        <span class="sidebar-role">Kasir</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="sidebar-link active" onclick="showDashSection('orders')" id="navOrders">
+        Order Masuk
+        <span class="nav-badge" id="sidebarBadge">0</span>
+      </a>
+      <a href="#" class="sidebar-link" onclick="showDashSection('menu-manager')" id="navMenu">
+        Kelola Menu
+      </a>
+      <a href="#" class="sidebar-link" onclick="showDashSection('history')" id="navHistory">
+        Riwayat
+      </a>
+    </nav>
+
+    <button class="sidebar-logout" onclick="logout()">
+      Keluar
+    </button>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="dashboard-main">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="btn-sidebar-toggle" onclick="toggleSidebar()">☰</button>
+        <h1 class="topbar-title" id="topbarTitle">Order Masuk</h1>
+      </div>
+      <div class="topbar-right">
+        <span class="topbar-time" id="topbarTime"></span>
+        <span class="topbar-user">Admin</span>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row" id="statsRow">
+      <div class="stat-card stat-waiting">
+        <div class="stat-indicator"></div>
+        <div>
+          <p class="stat-label">Menunggu</p>
+          <p class="stat-value" id="statWaiting">0</p>
+        </div>
+      </div>
+      <div class="stat-card stat-process">
+        <div class="stat-indicator"></div>
+        <div>
+          <p class="stat-label">Diproses</p>
+          <p class="stat-value" id="statProcess">0</p>
+        </div>
+      </div>
+      <div class="stat-card stat-done">
+        <div class="stat-indicator"></div>
+        <div>
+          <p class="stat-label">Selesai</p>
+          <p class="stat-value" id="statDone">0</p>
+        </div>
+      </div>
+      <div class="stat-card stat-revenue">
+        <div class="stat-indicator"></div>
+        <div>
+          <p class="stat-label">Pendapatan Hari Ini</p>
+          <p class="stat-value" id="statRevenue">Rp 0</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- === SECTION: ORDERS === -->
+    <section class="dash-section active" id="sectionOrders">
+
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterOrders('semua')">Semua</button>
+        <button class="filter-btn" onclick="filterOrders('menunggu')">Menunggu</button>
+        <button class="filter-btn" onclick="filterOrders('diproses')">Diproses</button>
+        <button class="filter-btn" onclick="filterOrders('selesai')">Selesai</button>
+      </div>
+
+      <div class="orders-grid" id="ordersGrid">
+        <div class="empty-state full-width">
+          <p>Belum ada pesanan masuk</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- === SECTION: MENU MANAGER === -->
+    <section class="dash-section" id="sectionMenuManager">
+      <div class="menu-manager-header">
+        <h2>Kelola Menu</h2>
+        <button class="btn-add-menu" onclick="openAddMenuModal()">+ Tambah Item</button>
+      </div>
+
+      <div class="manager-tabs">
+        <button class="mtab active" onclick="filterManagerCat('semua')">Semua</button>
+        <button class="mtab" onclick="filterManagerCat('makanan')">Makanan</button>
+        <button class="mtab" onclick="filterManagerCat('minuman')">Minuman</button>
+        <button class="mtab" onclick="filterManagerCat('pencuci-mulut')">Pencuci Mulut</button>
+      </div>
+
+      <div class="manager-table-wrap">
+        <table class="manager-table">
+          <thead>
+            <tr>
+              <th>Gambar</th>
+              <th>Nama</th>
+              <th>Kategori</th>
+              <th>Harga</th>
+              <th>Tersedia</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="menuManagerBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- === SECTION: HISTORY === -->
+    <section class="dash-section" id="sectionHistory">
+      <h2 style="margin-bottom:1.5rem;">Riwayat Pesanan</h2>
+      <div class="history-list" id="historyList">
+        <div class="empty-state">
+          <p>Belum ada riwayat pesanan</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal: Order Detail -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+  <div class="order-modal" id="orderModal">
+    <div class="modal-head">
+      <h3>Detail Pesanan</h3>
+      <button onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-content" id="orderModalContent"></div>
+    <div class="modal-actions" id="orderModalActions"></div>
+  </div>
+
+  <!-- Modal: Add/Edit Menu -->
+  <div class="modal-overlay" id="menuModalOverlay" onclick="closeMenuModal()"></div>
+  <div class="menu-modal" id="menuModal">
+    <div class="modal-head">
+      <h3 id="menuModalTitle">Tambah Item Menu</h3>
+      <button onclick="closeMenuModal()">✕</button>
+    </div>
+    <div class="menu-modal-form">
+      <input type="hidden" id="editMenuId" />
+      <div class="form-group">
+        <label>Nama Menu</label>
+        <input type="text" id="menuName" placeholder="Nama makanan/minuman" />
+      </div>
+      <div class="form-group">
+        <label>Kategori</label>
+        <select id="menuCategory">
+          <option value="makanan">Makanan</option>
+          <option value="minuman">Minuman</option>
+          <option value="pencuci-mulut">Pencuci Mulut</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Harga (Rp)</label>
+        <input type="number" id="menuPrice" placeholder="25000" />
+      </div>
+      <div class="form-group">
+        <label>Deskripsi</label>
+        <textarea id="menuDesc" placeholder="Deskripsi singkat..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Emoji / Icon</label>
+        <input type="text" id="menuEmoji" placeholder="🍲" />
+      </div>
+      <div class="form-group">
+        <label>Path Gambar (di folder assets)</label>
+        <input type="text" id="menuImage" placeholder="assets/makanan/kaledo.jpg" />
+      </div>
+      <div class="form-group toggle-group">
+        <label>Tersedia</label>
+        <label class="toggle-switch">
+          <input type="checkbox" id="menuAvailable" checked />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="form-actions">
+        <button class="btn-cancel" onclick="closeMenuModal()">Batal</button>
+        <button class="btn-save" onclick="saveMenuItem()">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

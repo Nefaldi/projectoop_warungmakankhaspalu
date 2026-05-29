@@ -1,0 +1,4 @@
+Folder ini untuk menyimpan ikon dan logo.
+
+File yang bisa ditambahkan:
+- logo.png  (logo utama warung, disarankan 200x200px transparan)

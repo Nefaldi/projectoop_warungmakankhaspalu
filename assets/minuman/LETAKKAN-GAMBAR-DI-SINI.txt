@@ -1,0 +1,9 @@
+Folder ini digunakan untuk menyimpan gambar minuman.
+
+Nama file yang diperlukan:
+- saraba.jpg
+- es-teh.jpg
+- teh-hangat.jpg
+- kopi.jpg
+- jus-jeruk.jpg
+- air-mineral.jpg
